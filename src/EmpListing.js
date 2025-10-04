@@ -82,6 +82,7 @@ const EmpListing = () => {
                 <td>Name</td>
                 <td>Email</td>
                 <td>Phone</td>
+                <th>Created At</th>
                 <td>Action</td>
               </tr>
             </thead>
@@ -92,6 +93,7 @@ const EmpListing = () => {
                   <td>{item.name}</td>
                   <td>{item.email}</td>
                   <td>{item.phone}</td>
+                  <td>{new Date(item.createdAt).toLocaleString()}</td>
                   <td>
                     <button
                       onClick={() => LoadEdit(item.id)}

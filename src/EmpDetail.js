@@ -26,6 +26,8 @@ const EmpDetail = () => {
             <p>Email: <b>{empdata.email}</b></p>
             <p>Phone: <b>{empdata.phone}</b></p>
             <p>Status: <b>{empdata.active ? "Active" : "Inactive"}</b></p>
+            <p>Created At: <b>{new Date(empdata.createdAt).toLocaleString()}</b></p>
+
             <Link className="btn btn-danger mt-3" to="/">
               Back to List
             </Link>
