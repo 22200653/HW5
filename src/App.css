@@ -41,3 +41,28 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  background-color: #f4f6f9;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.card {
+  border-radius: 1rem;
+  background-color: white;
+}
+
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+h2 {
+  color: #333;
+  font-weight: 700;
+}

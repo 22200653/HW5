@@ -3,24 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const EmpEdit = () => {
   const { empid } = useParams();
-  //const [empdata, setEmpdata] = useState({});
-
-  useEffect(() => {
-    fetch("https://68e1151293207c4b47963221.mockapi.io/api/v1/users" + empid)
-      .then((res) => {
-        return res.json();
-      })
-      .then((resp) => {
-        setId(resp.id);
-        setName(resp.name);
-        setEmail(resp.email);
-        setPhone(resp.phone);
-        setActive(resp.active);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,100 +11,100 @@ const EmpEdit = () => {
   const [validation, setValidation] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch("https://68e1151293207c4b47963221.mockapi.io/api/v1/users/" + empid)
+      .then((res) => res.json())
+      .then((resp) => {
+        setId(resp.id);
+        setName(resp.name);
+        setEmail(resp.email);
+        setPhone(resp.phone);
+        setActive(resp.active);
+      })
+      .catch((err) => console.log(err.message));
+  }, [empid]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const empdata = { id, name, email, phone, active };
 
-    fetch("http://localhost:8000/employee/" + empid, {
+    fetch("https://68e1151293207c4b47963221.mockapi.io/api/v1/users/" + empid, {
       method: "PUT",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(empdata),
     })
       .then((res) => {
-        alert("Saved successfully.");
+        alert("Updated successfully.");
         navigate("/");
       })
-      .catch((err) => {
-        console.log(err.message);
-      });
+      .catch((err) => console.log(err.message));
   };
+
   return (
-    <div>
+    <div className="container mt-4">
       <div className="row">
         <div className="offset-lg-3 col-lg-6">
           <form className="container" onSubmit={handleSubmit}>
-            <div className="card" style={{ textAlign: "left" }}>
-              <div className="card-title">
+            <div className="card shadow">
+              <div className="card-title text-center mt-3">
                 <h2>Employee Edit</h2>
               </div>
               <div className="card-body">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="form-group">
-                      <label>ID</label>
-                      <input
-                        value={id}
-                        disabled="disabled"
-                        className="form-control"
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="col-lg-12">
-                    <div className="form-group">
-                      <label>Name</label>
-                      <input
-                        onMouseDown={(e) => setValidation(true)}
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="form-control"
-                      ></input>
-                      {name.length === 0 && validation && (
-                        <span className="text-danger">Enter the name</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="col-lg-12">
-                    <div className="form-group">
-                      <label>Email</label>
-                      <input
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="form-control"
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="col-lg-12">
-                    <div className="form-group">
-                      <label>Phone</label>
-                      <input
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="form-control"
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="col-lg-12">
-                    <div className="form-check">
-                      <input
-                        checked={active}
-                        onChange={(e) => setActive(e.target.checked)}
-                        type="checkbox"
-                        className="form-check-input"
-                      ></input>
-                      <label className="form-check-label">Is Active</label>
-                    </div>
-                  </div>
-                  <div className="col-lg-12">
-                    <div className="form-group">
-                      <button className="btn btn-success" type="submit">
-                        Save
-                      </button>
-                      <Link to="/" className="btn btn-danger">
-                        Back
-                      </Link>
-                    </div>
-                  </div>
+                <div className="mb-3">
+                  <label>ID</label>
+                  <input value={id} disabled className="form-control" />
+                </div>
+                <div className="mb-3">
+                  <label>Name</label>
+                  <input
+                    onMouseDown={() => setValidation(true)}
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="form-control"
+                  />
+                  {name.length === 0 && validation && (
+                    <span className="text-danger">Enter the name</span>
+                  )}
+                </div>
+                <div className="mb-3">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="form-control"
+                  />
+                  {email.length > 0 &&
+                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
+                      <span className="text-danger">Invalid email format</span>
+                    )}
+                </div>
+                <div className="mb-3">
+                  <label>Phone</label>
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-check mb-3">
+                  <input
+                    checked={active}
+                    onChange={(e) => setActive(e.target.checked)}
+                    type="checkbox"
+                    className="form-check-input"
+                  />
+                  <label className="form-check-label">Is Active</label>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <button className="btn btn-success" type="submit">
+                    Save
+                  </button>
+                  <Link to="/" className="btn btn-danger">
+                    Back
+                  </Link>
                 </div>
               </div>
             </div>
